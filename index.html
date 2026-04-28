@@ -1,1 +1,37 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Invitation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="envelope">
+                <div class="flap"></div>
+                <div class="front">
+                    <div class="address-label">
+                        <p>To:</p>
+                        <h2 id="envelopeGuestName">Guest Name</h2>
+                    </div>
+                </div>
+                
+                <div class="card" id="inviteCard">
+                    <img src="invite-design.png" alt="Party Invite" class="invite-image">
+                    
+                    <form id="rsvpForm">
+                        <input type="hidden" id="guestNameInput">
+                        <div class="button-group">
+                            <button type="submit" name="status" value="yes" class="btn btn-yes">I'm Coming!</button>
+                            <button type="submit" name="status" value="no" class="btn btn-no">Can't Make It</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
