@@ -126,7 +126,7 @@ body {
 .invite-image {
     width: 100%;
     height: auto;
-    max-height: 48vh; /* Adjusted to fit the extra line of text */
+    max-height: 48vh; 
     object-fit: contain;
     display: block;
     margin-bottom: 12px;
@@ -151,7 +151,7 @@ body {
     font-size: 0.75rem; 
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
-    text-transform: lowercase;
+    /* Removed text-transform to allow capitalization */
 }
 
 .btn:active {
@@ -177,7 +177,7 @@ body {
     color: var(--env-dark);
     margin-top: 15px;
     margin-bottom: 5px;
-    text-transform: lowercase;
+    /* Removed text-transform to allow capitalization of June */
     letter-spacing: 0.5px;
     opacity: 0.9;
 }
