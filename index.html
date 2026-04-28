@@ -1,50 +1,192 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You're Invited!</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+/* 1. Imports & Setup */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
-    <div class="container">
-        <div class="envelope-flipper" id="flipper">
-            
-            <div class="env-front">
-                <div class="calligraphy-text" id="envelopeGuestName">
-                    Loading...
-                </div>
-            </div>
+:root {
+    --env-color: #f08080;   /* Main Envelope Color */
+    --env-dark: #cc6666;    /* Flap Color */
+    --bg-color: #fdf5e6;    /* Page Background */
+    --groovy-yellow: #FFD700;
+    --retro-red: #FF4500;
+}
 
-            <div class="env-back">
-                <div class="flap"></div>
-                <div class="back-fold"></div>
-                
-                <div class="card" id="inviteCard">
-                    <img src="invite-design.png" alt="Party Invitation" class="invite-image">
-                    
-                    <form id="rsvpForm">
-                        <input type="hidden" id="guestNameInput">
-                        
-                        <div class="button-group">
-                            <button type="submit" name="status" value="yes" class="btn btn-yes">
-                                👍 Yeah baby, that is so groovy
-                            </button>
-                            <button type="submit" name="status" value="no" class="btn btn-no">
-                                👎 No go Daddy-o
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    perspective: 2000px;
+}
 
-        </div>
-    </div>
+/* 2. The Animation Container */
+.envelope-flipper {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
 
-    <script src="script.js"></script>
-</body>
-</html>
+/* Class added by JS to trigger spin */
+.envelope-flipper.spun {
+    transform: rotateY(180deg);
+}
+
+.env-front, .env-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* 3. FRONT: Calligraphy Side */
+.env-front {
+    background-color: var(--env-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.calligraphy-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    color: #3d3d3d;
+    text-align: center;
+    padding: 20px;
+}
+
+/* 4. BACK: Flap Side */
+.env-back {
+    background-color: var(--env-color);
+    transform: rotateY(180deg); 
+}
+
+.back-fold {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--env-color);
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    z-index: 3;
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 110px solid var(--env-dark);
+    z-index: 4;
+    transition: transform 0.6s ease 1.2s; 
+    transform-origin: top;
+}
+
+.envelope-flipper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1; 
+}
+
+/* 5. THE CARD: Pop out and Settle animation */
+.card {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    background: white;
+    padding: 15px;
+    z-index: 2;
+    opacity: 0;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.envelope-flipper.open .card {
+    animation: popOutAndSettle 1.8s ease-in-out forwards;
+    animation-delay: 1.6s; 
+}
+
+@keyframes popOutAndSettle {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.9);
+        z-index: 2;
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-140px) scale(0.95);
+        z-index: 2;
+    }
+    60% {
+        z-index: 10;
+        transform: translateY(-140px) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        z-index: 10;
+        transform: translateY(20px) scale(1.15); /* Settles over the envelope area */
+    }
+}
+
+.invite-image {
+    width: 100%;
+    height: auto;
+    max-height: 50vh; /* Adjusted to leave room for the longer buttons */
+    object-fit: contain;
+    display: block;
+    margin-bottom: 15px;
+    border-radius: 4px;
+}
+
+/* 6. RSVP Buttons - Groovy Style */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn {
+    width: 100%;
+    padding: 14px 10px;
+    border: none;
+    border-radius: 50px; /* Pill shape */
+    font-family: 'Shrikhand', cursive; /* Fun retro font */
+    font-weight: normal;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 0px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px rgba(0,0,0,0.1);
+}
+
+.btn-yes { 
+    background-color: var(--groovy-yellow);
+    color: #333;
+    animation: subtlePulse 2s infinite;
+}
+
+.btn-no { 
+    background-color: var(--retro-red);
+    color: white; 
+}
+
+@keyframes subtlePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
