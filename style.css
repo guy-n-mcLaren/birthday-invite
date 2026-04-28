@@ -2,9 +2,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
 :root {
-    --env-color: #f08080;   
-    --env-dark: #cc6666;    
-    --bg-color: #fdf5e6;    
+    /* Using a base coral color, but we will soften it with texture */
+    --env-base-color: #f08080;   
+    --env-dark: #cc6666;    /* For the flap */
+    --bg-color: #fdf5e6;    /* Page Background */
     --groovy-yellow: #FFD700;
     --retro-red: #FF4500;
 }
@@ -45,13 +46,37 @@ body {
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* 3. FRONT: Calligraphy Side */
+/* 3. FRONT: Calligraphy & Postmark Side (UPDATED FOR PREMIUM LOOK) */
 .env-front {
-    background-color: var(--env-color);
+    /* STACKED BACKGROUNDS:
+       1. The Postmark PNG (transparent, offset slightly)
+       2. A subtle built-in browser gradient to simulate paper fibers
+       3. The base envelope color
+    */
+    background-image: 
+        url('postmark.png'), 
+        linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.1) 75%, transparent 75%, transparent),
+        var(--env-base-color);
+    
+    background-size: 80px 80px, 4px 4px, cover; /* Size of the postmark, the texture, and the base */
+    background-position: 30px 30px, 0 0, 0 0; /* Position the postmark (top-left) */
+    background-repeat: no-repeat, repeat, no-repeat;
+    
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2;
+    overflow: hidden; /* Important so the postmark can 'bleed' slightly */
+}
+
+/* Add a slight 'felt' look over the whole front */
+.env-front::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
 }
 
 .calligraphy-text {
@@ -60,19 +85,26 @@ body {
     color: #3d3d3d;
     text-align: center;
     padding: 20px;
+    z-index: 3; /* Keeps text above the postmark stamp */
+    text-shadow: 0 1px 1px rgba(255,255,255,0.4); /* Subtle text enhancement */
 }
 
 /* 4. BACK: Flap Side */
 .env-back {
-    background-color: var(--env-color);
+    background-color: var(--env-base-color);
     transform: rotateY(180deg); 
+}
+
+/* Also give the back folds the subtle premium feel */
+.back-fold, .flap {
+     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23ffffff' fill-opacity='0.05' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 .back-fold {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--env-color);
+    background-color: var(--env-base-color);
     clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     z-index: 3;
 }
@@ -151,7 +183,6 @@ body {
     font-size: 0.75rem; 
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
-    /* Removed text-transform to allow capitalization */
 }
 
 .btn:active {
@@ -177,7 +208,6 @@ body {
     color: var(--env-dark);
     margin-top: 15px;
     margin-bottom: 5px;
-    /* Removed text-transform to allow capitalization of June */
     letter-spacing: 0.5px;
     opacity: 0.9;
 }
