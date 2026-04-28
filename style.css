@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
 :root {
-    --env-color: #f08080;   /* Main Envelope Color */
-    --env-dark: #cc6666;    /* Flap Color */
-    --bg-color: #fdf5e6;    /* Page Background */
+    --env-color: #f08080;   
+    --env-dark: #cc6666;    
+    --bg-color: #fdf5e6;    
     --groovy-yellow: #FFD700;
     --retro-red: #FF4500;
 }
@@ -95,7 +95,7 @@ body {
     z-index: 1; 
 }
 
-/* 5. THE CARD: Pop out and Settle animation */
+/* 5. THE CARD: Pop out and Settle */
 .card {
     position: absolute;
     top: 5px;
@@ -126,14 +126,14 @@ body {
 .invite-image {
     width: 100%;
     height: auto;
-    max-height: 55vh; 
+    max-height: 48vh; /* Adjusted to fit the extra line of text */
     object-fit: contain;
     display: block;
     margin-bottom: 12px;
     border-radius: 4px;
 }
 
-/* 6. RSVP Buttons - Balanced Retro Pills */
+/* 6. RSVP Buttons */
 .button-group {
     display: flex;
     flex-direction: row; 
@@ -142,13 +142,13 @@ body {
 }
 
 .btn {
-    flex: 1; /* This ensures both buttons are exactly the same width */
+    flex: 1;
     padding: 10px 5px; 
     border: none;
     border-radius: 25px; 
     font-family: 'Shrikhand', cursive;
     cursor: pointer;
-    font-size: 0.75rem; /* Smaller font to ensure single-line fit on mobile */
+    font-size: 0.75rem; 
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
     text-transform: lowercase;
@@ -168,6 +168,18 @@ body {
 .btn-no { 
     background-color: var(--retro-red);
     color: white; 
+}
+
+/* 7. Deadline Text */
+.deadline-text {
+    font-family: 'Shrikhand', cursive;
+    font-size: 0.7rem;
+    color: var(--env-dark);
+    margin-top: 15px;
+    margin-bottom: 5px;
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
 }
 
 @keyframes subtlePulse {
