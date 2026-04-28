@@ -1,6 +1,6 @@
 // 1. CONFIGURATION
 // Replace the URL below with your LIVE Google Apps Script URL (ending in /exec)
-const scriptURL = 'https://script.google.com/macros/s/AKfycbygPqgFO6Szzu5D-W_ztlxT8FS69mCOCsV715JetZtc4BIPw8ZyJAsiPOF7YDqijFnvpw/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbw7KqvoKGvxVXzrUqHqcY3TcQJgLJPaGW7-B6RUZOVmauCoW2srs7WohQHWPnr49oYR2A/exec';
 
 const flipper = document.getElementById('flipper');
 const rsvpForm = document.getElementById('rsvpForm');
