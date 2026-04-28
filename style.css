@@ -1,14 +1,26 @@
+/* 1. Imports & Setup */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+:root {
+    --env-color: #f08080;   /* Main Envelope Color */
+    --env-dark: #cc6666;    /* Flap Color */
+    --bg-color: #fdf5e6;    /* Page Background */
+}
+
 body {
     margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #fdf5e6;
+    background-color: var(--bg-color);
+    font-family: sans-serif;
     overflow: hidden;
-    perspective: 2000px;
+    perspective: 2000px; /* Essential for 3D depth */
 }
 
+/* 2. The Animation Container */
 .envelope-flipper {
     position: relative;
     width: 320px;
@@ -18,7 +30,7 @@ body {
     cursor: pointer;
 }
 
-/* This is the class added by JS */
+/* Class added by JS to trigger spin */
 .envelope-flipper.spun {
     transform: rotateY(180deg);
 }
@@ -27,12 +39,14 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden;
+    backface-visibility: hidden; /* Hides the side not facing user */
     border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
+/* 3. FRONT: Calligraphy Side */
 .env-front {
-    background-color: #f08080;
+    background-color: var(--env-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,16 +55,27 @@ body {
 
 .calligraphy-text {
     font-family: 'Great Vibes', cursive;
-    font-size: 2.5rem;
-    color: #4a4a4a;
+    font-size: 2.8rem;
+    color: #3d3d3d;
+    text-align: center;
+    padding: 20px;
 }
 
+/* 4. BACK: Flap Side */
 .env-back {
-    background-color: #f08080;
-    transform: rotateY(180deg); /* Flip it so it sits behind the front */
+    background-color: var(--env-color);
+    transform: rotateY(180deg); /* Positioned behind the front */
 }
 
-/* The dark flap on the back */
+.back-fold {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--env-color);
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    z-index: 3;
+}
+
 .flap {
     position: absolute;
     top: 0;
@@ -58,38 +83,86 @@ body {
     height: 0;
     border-left: 160px solid transparent;
     border-right: 160px solid transparent;
-    border-top: 110px solid #cc6666;
+    border-top: 110px solid var(--env-dark);
     z-index: 4;
-    transition: transform 0.5s ease 1.2s;
+    transition: transform 0.6s ease 1.2s; /* Waits for spin to finish */
     transform-origin: top;
 }
 
 .envelope-flipper.open .flap {
     transform: rotateX(180deg);
-    z-index: 1;
+    z-index: 1; /* Moves flap behind the card */
 }
 
-/* The Invite Card */
+/* 5. THE CARD: Pop out and Settle animation */
 .card {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
+    top: 5px;
+    left: 5px;
+    right: 5px;
     background: white;
     padding: 10px;
     z-index: 2;
-    opacity: 0; /* Hidden initially */
-    transition: all 0.8s ease 1.7s;
+    opacity: 0;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 4px;
 }
 
+/* Trigger the complex movement when 'open' class is added */
 .envelope-flipper.open .card {
-    opacity: 1;
-    transform: translateY(-260px) scale(1.1); /* Slide up and grow */
-    z-index: 10;
+    animation: popOutAndSettle 1.8s ease-in-out forwards;
+    animation-delay: 1.6s; /* Waits for spin + flap */
 }
 
-.invite-image { width: 100%; height: auto; }
-.button-group { display: flex; gap: 5px; margin-top: 10px; }
-.btn { flex: 1; padding: 10px; border: none; color: white; cursor: pointer; }
+@keyframes popOutAndSettle {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.9);
+        z-index: 2;
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-140px) scale(0.95); /* Clears the envelope */
+        z-index: 2;
+    }
+    60% {
+        z-index: 10; /* Pops to the front of the envelope */
+        transform: translateY(-140px) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        z-index: 10;
+        transform: translateY(20px) scale(1.15); /* Descends to cover envelope */
+    }
+}
+
+.invite-image {
+    width: 100%;
+    height: auto;
+    max-height: 60vh; /* Keeps card from being too tall for mobile */
+    object-fit: contain;
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* 6. RSVP Buttons */
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
 .btn-yes { background-color: #2ecc71; }
 .btn-no { background-color: #e74c3c; }
