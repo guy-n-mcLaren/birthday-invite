@@ -1,1 +1,114 @@
+:root {
+    --env-color: #f08080;
+    --env-dark: #cc6666;
+    --bg-color: #fdf5e6;
+}
 
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden; /* Prevents scrolling during animation */
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 320px; /* Sized for mobile */
+    height: 220px;
+    cursor: pointer;
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: var(--env-color);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.front {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--env-color);
+    /* Basic envelope folds look */
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+}
+
+.address-label {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    transform: rotate(-2deg);
+}
+
+.flap {
+    position: absolute;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-left: 160px solid transparent;
+    border-right: 160px solid transparent;
+    border-top: 110px solid var(--env-dark);
+    z-index: 4;
+    transition: transform 0.6s ease;
+    transform-origin: top;
+}
+
+/* The PNG Card */
+.card {
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+    left: 5%;
+    background: white;
+    transition: transform 0.8s ease-in-out;
+    z-index: 1;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.invite-image {
+    width: 100%;
+    display: block;
+}
+
+/* Animation trigger */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1; /* Move flap behind card */
+}
+
+.envelope-wrapper.open .card {
+    transform: translateY(-200px); /* Slides card up */
+    z-index: 5;
+}
+
+/* RSVP Buttons */
+.button-group {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+}
+
+.btn {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-yes { background-color: #4CAF50; }
+.btn-no { background-color: #f44336; }
