@@ -1,30 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
-
-:root {
-    --env-color: #f08080;
-    --env-dark: #cc6666;
-}
-
 body {
     margin: 0;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     background-color: #fdf5e6;
-    perspective: 1500px; /* Stronger perspective for the spin */
+    overflow: hidden;
+    perspective: 2000px;
 }
 
 .envelope-flipper {
     position: relative;
     width: 320px;
     height: 220px;
-    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
 }
 
-/* State when clicked: Spin the whole thing */
+/* This is the class added by JS */
 .envelope-flipper.spun {
     transform: rotateY(180deg);
 }
@@ -33,14 +27,12 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* Important: hides the side not facing the user */
-    border-radius: 5px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    backface-visibility: hidden;
+    border-radius: 8px;
 }
 
-/* FRONT SIDE (Calligraphy) */
 .env-front {
-    background-color: var(--env-color);
+    background-color: #f08080;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,25 +43,14 @@ body {
     font-family: 'Great Vibes', cursive;
     font-size: 2.5rem;
     color: #4a4a4a;
-    text-align: center;
-    padding: 20px;
 }
 
-/* BACK SIDE (The Flap side) */
 .env-back {
-    background-color: var(--env-color);
-    transform: rotateY(180deg); /* Starts facing away */
+    background-color: #f08080;
+    transform: rotateY(180deg); /* Flip it so it sits behind the front */
 }
 
-.back-fold {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: var(--env-color);
-    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
-    z-index: 3;
-}
-
+/* The dark flap on the back */
 .flap {
     position: absolute;
     top: 0;
@@ -77,46 +58,38 @@ body {
     height: 0;
     border-left: 160px solid transparent;
     border-right: 160px solid transparent;
-    border-top: 115px solid var(--env-dark);
+    border-top: 110px solid #cc6666;
     z-index: 4;
-    transition: transform 0.6s ease 1s; /* Waits for spin to finish */
+    transition: transform 0.5s ease 1.2s;
     transform-origin: top;
 }
 
-/* The Card */
-.card {
-    position: absolute;
-    bottom: 0;
-    width: 90%;
-    left: 5%;
-    background: white;
-    z-index: 2;
-    padding: 10px;
-    box-sizing: border-box;
-    transition: all 1s ease 1.8s; /* Waits for flap to open */
-    opacity: 0;
-}
-
-/* OPEN STATE ANIMATIONS */
-.envelope-flipper.spun.open .flap {
+.envelope-flipper.open .flap {
     transform: rotateX(180deg);
     z-index: 1;
 }
 
-.envelope-flipper.spun.open .card {
-    opacity: 1;
-    transform: translateY(0) scale(1.1); /* Floating out */
-    /* To make it "fill the place", we expand it */
-    height: 400px; 
-    width: 110%;
-    left: -5%;
-    top: -100px;
-    z-index: 10;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+/* The Invite Card */
+.card {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: white;
+    padding: 10px;
+    z-index: 2;
+    opacity: 0; /* Hidden initially */
+    transition: all 0.8s ease 1.7s;
 }
 
-.invite-image { width: 100%; }
-.button-group { display: flex; gap: 10px; margin-top: 10px; }
-.btn { flex: 1; padding: 10px; border: none; border-radius: 4px; color: white; cursor: pointer; }
+.envelope-flipper.open .card {
+    opacity: 1;
+    transform: translateY(-260px) scale(1.1); /* Slide up and grow */
+    z-index: 10;
+}
+
+.invite-image { width: 100%; height: auto; }
+.button-group { display: flex; gap: 5px; margin-top: 10px; }
+.btn { flex: 1; padding: 10px; border: none; color: white; cursor: pointer; }
 .btn-yes { background-color: #2ecc71; }
 .btn-no { background-color: #e74c3c; }
