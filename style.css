@@ -32,7 +32,6 @@ body {
     cursor: pointer;
 }
 
-/* Class added by JS to trigger spin */
 .envelope-flipper.spun {
     transform: rotateY(180deg);
 }
@@ -118,25 +117,10 @@ body {
 }
 
 @keyframes popOutAndSettle {
-    0% {
-        opacity: 0;
-        transform: translateY(0) scale(0.9);
-        z-index: 2;
-    }
-    40% {
-        opacity: 1;
-        transform: translateY(-140px) scale(0.95);
-        z-index: 2;
-    }
-    60% {
-        z-index: 10;
-        transform: translateY(-140px) scale(1.1);
-    }
-    100% {
-        opacity: 1;
-        z-index: 10;
-        transform: translateY(20px) scale(1.15); 
-    }
+    0% { opacity: 0; transform: translateY(0) scale(0.9); z-index: 2; }
+    40% { opacity: 1; transform: translateY(-140px) scale(0.95); z-index: 2; }
+    60% { z-index: 10; transform: translateY(-140px) scale(1.1); }
+    100% { opacity: 1; z-index: 10; transform: translateY(20px) scale(1.15); }
 }
 
 .invite-image {
@@ -149,25 +133,25 @@ body {
     border-radius: 4px;
 }
 
-/* 6. RSVP Buttons - Compact & Groovy Side-by-Side */
+/* 6. RSVP Buttons - Balanced Retro Pills */
 .button-group {
     display: flex;
-    flex-direction: row; /* Horizontal row */
-    gap: 8px;
+    flex-direction: row; 
+    gap: 10px;
     margin-top: 5px;
 }
 
 .btn {
-    flex: 1;
-    padding: 8px 4px; /* Slim height */
+    flex: 1; /* This ensures both buttons are exactly the same width */
+    padding: 10px 5px; 
     border: none;
-    border-radius: 25px; /* Pill shape */
+    border-radius: 25px; 
     font-family: 'Shrikhand', cursive;
     cursor: pointer;
-    font-size: 0.85rem; 
+    font-size: 0.75rem; /* Smaller font to ensure single-line fit on mobile */
     transition: transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
-    white-space: nowrap; /* Keeps emoji and text together */
+    text-transform: lowercase;
 }
 
 .btn:active {
