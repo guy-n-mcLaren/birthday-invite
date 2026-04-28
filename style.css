@@ -1,79 +1,73 @@
-/* 1. Setup & Variables */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 :root {
-    --env-color: #f08080;   /* Main Envelope Color */
-    --env-dark: #cc6666;    /* Darker shade for the flap */
-    --bg-color: #fdf5e6;    /* Soft background color */
+    --env-color: #f08080;
+    --env-dark: #cc6666;
 }
 
 body {
     margin: 0;
-    padding: 0;
-    background-color: var(--bg-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow: hidden; /* Prevents scrolling during the animation */
-}
-
-/* 2. The Container */
-.container {
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #fdf5e6;
+    perspective: 1500px; /* Stronger perspective for the spin */
 }
 
-.envelope-wrapper {
+.envelope-flipper {
     position: relative;
     width: 320px;
     height: 220px;
-    background-color: var(--env-color);
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
     cursor: pointer;
-    perspective: 1000px; /* Essential for 3D flap flip */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* 3. The Envelope Components */
-.envelope {
-    position: relative;
-    width: 100%;
-    height: 100%;
+/* State when clicked: Spin the whole thing */
+.envelope-flipper.spun {
+    transform: rotateY(180deg);
 }
 
-.front {
+.env-front, .env-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 3; /* Keeps card hidden inside initially */
+    backface-visibility: hidden; /* Important: hides the side not facing the user */
+    border-radius: 5px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* FRONT SIDE (Calligraphy) */
+.env-front {
     background-color: var(--env-color);
     display: flex;
     justify-content: center;
     align-items: center;
-    /* This creates the envelope "fold" look */
-    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    z-index: 2;
 }
 
-.address-label {
+.calligraphy-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.5rem;
+    color: #4a4a4a;
     text-align: center;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px 20px;
-    border-radius: 4px;
-    transform: rotate(-2deg);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    padding: 20px;
 }
 
-.address-label p {
-    margin: 0;
-    font-size: 12px;
-    color: #888;
+/* BACK SIDE (The Flap side) */
+.env-back {
+    background-color: var(--env-color);
+    transform: rotateY(180deg); /* Starts facing away */
 }
 
-.address-label h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: #333;
+.back-fold {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--env-color);
+    clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+    z-index: 3;
 }
 
 .flap {
@@ -84,67 +78,45 @@ body {
     border-left: 160px solid transparent;
     border-right: 160px solid transparent;
     border-top: 115px solid var(--env-dark);
-    z-index: 4; /* On top of everything until opened */
-    transition: transform 0.6s ease;
+    z-index: 4;
+    transition: transform 0.6s ease 1s; /* Waits for spin to finish */
     transform-origin: top;
 }
 
-/* 4. The Card (Invite Content) */
+/* The Card */
 .card {
     position: absolute;
-    bottom: 5px; /* Tucked slightly inside */
+    bottom: 0;
     width: 90%;
     left: 5%;
     background: white;
-    transition: transform 0.8s ease-in-out, z-index 0.1s 0.4s;
-    z-index: 2; /* Initially behind the front of the envelope */
+    z-index: 2;
     padding: 10px;
     box-sizing: border-box;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    text-align: center;
+    transition: all 1s ease 1.8s; /* Waits for flap to open */
+    opacity: 0;
 }
 
-.invite-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 10px;
-}
-
-/* 5. Animation Triggers */
-.envelope-wrapper.open .flap {
+/* OPEN STATE ANIMATIONS */
+.envelope-flipper.spun.open .flap {
     transform: rotateX(180deg);
-    z-index: 1; /* Move behind the card after opening */
+    z-index: 1;
 }
 
-.envelope-wrapper.open .card {
-    transform: translateY(-240px); /* Moves it UP out of the envelope */
-    z-index: 5; /* Brings it to the very front so user can click buttons */
+.envelope-flipper.spun.open .card {
+    opacity: 1;
+    transform: translateY(0) scale(1.1); /* Floating out */
+    /* To make it "fill the place", we expand it */
+    height: 400px; 
+    width: 110%;
+    left: -5%;
+    top: -100px;
+    z-index: 10;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
 }
 
-/* 6. Form & Buttons */
-.button-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-.btn {
-    flex: 1;
-    padding: 12px 5px;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: opacity 0.2s;
-}
-
-.btn:active {
-    opacity: 0.8;
-}
-
+.invite-image { width: 100%; }
+.button-group { display: flex; gap: 10px; margin-top: 10px; }
+.btn { flex: 1; padding: 10px; border: none; border-radius: 4px; color: white; cursor: pointer; }
 .btn-yes { background-color: #2ecc71; }
 .btn-no { background-color: #e74c3c; }
