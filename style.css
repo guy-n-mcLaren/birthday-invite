@@ -1,10 +1,10 @@
-/* 1. Imports & Setup */
+/* 1. IMPORTS & SETUP */
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
 :root {
-    --env-color: #f08080;   
-    --env-dark: #cc6666;    
-    --bg-color: #fdf5e6;    
+    --env-color: #f08080;   /* Main Coral */
+    --env-dark: #cc6666;    /* Darker Coral for Flap */
+    --bg-color: #fdf5e6;    /* Off-white page background */
     --groovy-yellow: #FFD700;
     --retro-red: #FF4500;
 }
@@ -17,12 +17,12 @@ body {
     align-items: center;
     height: 100vh;
     background-color: var(--bg-color);
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
     perspective: 2000px;
 }
 
-/* 2. The Animation Container */
+/* 2. THE ANIMATION CONTAINER */
 .envelope-flipper {
     position: relative;
     width: 320px;
@@ -47,12 +47,13 @@ body {
 
 /* 3. FRONT: Texture + Postmark + Calligraphy */
 .env-front {
+    background-color: var(--env-color); /* Fallback color */
     background-image: url('postmark.png'), url('paper-texture.jpg');
-    background-color: var(--env-color);
     background-size: 100px auto, 300px 300px;
     background-position: 20px 20px, center;
     background-repeat: no-repeat, repeat;
     background-blend-mode: multiply;
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,44 +70,40 @@ body {
     z-index: 10;
 }
 
-/* 4. BACK: The Main Body & The Flap */
+/* 4. BACK: Body & Folds */
 .env-back {
-    background-image: url('paper-texture.jpg');
     background-color: var(--env-color);
+    background-image: url('paper-texture.jpg');
     background-size: 300px 300px;
     background-blend-mode: multiply;
     transform: rotateY(180deg); 
 }
 
-/* The Bottom/Side Fold */
 .back-fold {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: url('paper-texture.jpg');
     background-color: var(--env-color);
+    background-image: url('paper-texture.jpg');
     background-size: 300px 300px;
     background-blend-mode: multiply;
-    /* This creates the V-shape cut for the pocket */
     clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
     z-index: 3;
 }
 
-/* THE NEW IMPROVED FLAP */
+/* THE FLAP: Using Clip-Path for texture compatibility */
 .flap {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 120px; /* Increased height slightly for better overlap */
+    height: 120px;
+    background-color: var(--env-dark); 
     background-image: url('paper-texture.jpg');
-    background-color: var(--env-dark); /* Using the darker shade for the flap */
     background-size: 300px 300px;
     background-blend-mode: multiply;
     
-    /* Using clip-path instead of borders so the texture works! */
     clip-path: polygon(0 0, 100% 0, 50% 100%);
-    
     z-index: 4;
     transition: transform 0.6s ease 1.2s; 
     transform-origin: top;
@@ -118,13 +115,13 @@ body {
     z-index: 1; 
 }
 
-/* 5. THE CARD */
+/* 5. THE CARD: Premium White Paper */
 .card {
     position: absolute;
     top: 5px;
     left: 5px;
     right: 5px;
-    background-color: #fff;
+    background-color: #ffffff;
     background-image: url('paper-texture.jpg');
     background-size: 300px 300px;
     background-blend-mode: multiply;
@@ -149,7 +146,7 @@ body {
     100% { opacity: 1; z-index: 10; transform: translateY(20px) scale(1.15); }
 }
 
-/* 6. RSVP Buttons & Extras */
+/* 6. INVITE CONTENT & BUTTONS */
 .invite-image {
     width: 100%;
     height: auto;
@@ -176,6 +173,11 @@ body {
     font-size: 0.75rem; 
     transition: all 0.2s;
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0px rgba(0,0,0,0.1);
 }
 
 .btn-yes { background-color: var(--groovy-yellow); color: #333; }
