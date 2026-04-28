@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
 :root {
-    --env-color: #f08080;   /* Matching Coral */
-    --env-dark: #cc6666;    /* Flap */
+    --env-color: #f08080;   
+    --env-dark: #cc6666;    
     --bg-color: #fdf5e6;    
     --groovy-yellow: #FFD700;
     --retro-red: #FF4500;
@@ -42,21 +42,19 @@ body {
     height: 100%;
     backface-visibility: hidden;
     border-radius: 8px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2); /* Deeper shadow for "weight" */
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
 }
 
-/* 3. FRONT: Texture + Postmark */
+/* 3. FRONT: Texture + Postmark + Calligraphy Fix */
 .env-front {
-    /* Layer 1: Postmark, Layer 2: Paper Grain, Layer 3: Base Color */
     background-image: 
         url('postmark.png'), 
-        url('paper-texture.jpg'), 
-        linear-gradient(var(--env-color), var(--env-color));
-    
-    background-size: 100px auto, 300px 300px, cover;
-    background-position: 20px 20px, center, center;
-    background-repeat: no-repeat, repeat, no-repeat;
-    background-blend-mode: multiply; /* This blends the grain into the color */
+        url('paper-texture.jpg');
+    background-color: var(--env-color);
+    background-size: 100px auto, 300px 300px;
+    background-position: 20px 20px, center;
+    background-repeat: no-repeat, repeat;
+    background-blend-mode: multiply; /* Blends grain into the coral color */
     
     display: flex;
     justify-content: center;
@@ -64,22 +62,32 @@ body {
     z-index: 2;
 }
 
-/* 4. BACK: Flap Side */
+.calligraphy-text {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2.8rem;
+    color: #3d3d3d;
+    text-align: center;
+    padding: 20px;
+    position: relative; /* Ensures it stays above background layers */
+    z-index: 10;
+    text-shadow: 0 1px 1px rgba(255,255,255,0.3);
+}
+
+/* 4. BACK: Texture applied to Flap and Fold */
 .env-back {
-    background-color: var(--env-color);
     background-image: url('paper-texture.jpg');
+    background-color: var(--env-color);
     background-size: 300px 300px;
     background-blend-mode: multiply;
     transform: rotateY(180deg); 
 }
 
-/* The Folds */
 .back-fold {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: var(--env-color);
     background-image: url('paper-texture.jpg');
+    background-color: var(--env-color);
     background-size: 300px 300px;
     background-blend-mode: multiply;
     clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
@@ -90,6 +98,7 @@ body {
 .flap {
     position: absolute;
     top: 0;
+    left: 0;
     width: 0;
     height: 0;
     border-left: 160px solid transparent;
@@ -98,7 +107,23 @@ body {
     z-index: 4;
     transition: transform 0.6s ease 1.2s; 
     transform-origin: top;
-    filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    
+    /* Adding texture to the flap using a filter trick */
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+}
+
+/* Texture overlay for the flap */
+.flap::after {
+    content: '';
+    position: absolute;
+    top: -110px; /* Matches flap height */
+    left: -160px; /* Matches half flap width */
+    width: 320px;
+    height: 110px;
+    background-image: url('paper-texture.jpg');
+    background-size: 300px 300px;
+    opacity: 0.15; /* Subtle grain on the darker flap */
+    clip-path: polygon(0 0, 50% 100%, 100% 0);
 }
 
 .envelope-flipper.open .flap {
@@ -106,15 +131,16 @@ body {
     z-index: 1; 
 }
 
-/* 5. THE CARD */
+/* 5. THE CARD: Premium White Paper */
 .card {
     position: absolute;
     top: 5px;
     left: 5px;
     right: 5px;
-    background: white;
+    background-color: #fff;
     background-image: url('paper-texture.jpg');
-    background-blend-mode: overlay;
+    background-size: 300px 300px;
+    background-blend-mode: multiply;
     padding: 15px;
     z-index: 2;
     opacity: 0;
@@ -136,6 +162,8 @@ body {
     100% { opacity: 1; z-index: 10; transform: translateY(20px) scale(1.15); }
 }
 
+/* ... Buttons and Deadline stay the same ... */
+
 .invite-image {
     width: 100%;
     height: auto;
@@ -146,7 +174,6 @@ body {
     border-radius: 4px;
 }
 
-/* 6. RSVP Buttons */
 .button-group {
     display: flex;
     gap: 10px;
@@ -165,15 +192,9 @@ body {
     box-shadow: 0 3px 0px rgba(0,0,0,0.1);
 }
 
-.btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 1px 0px rgba(0,0,0,0.1);
-}
-
 .btn-yes { background-color: var(--groovy-yellow); color: #333; }
 .btn-no { background-color: var(--retro-red); color: white; }
 
-/* 7. Deadline Text */
 .deadline-text {
     font-family: 'Shrikhand', cursive;
     font-size: 0.7rem;
