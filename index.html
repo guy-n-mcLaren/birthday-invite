@@ -1,23 +1,40 @@
-<div class="container">
-    <div class="envelope-flipper" id="flipper">
-        <div class="env-front">
-            <div class="calligraphy-text" id="envelopeGuestName">Guest Name</div>
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You're Invited</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        <div class="env-back">
-            <div class="flap"></div>
-            <div class="back-fold"></div>
+    <div class="container">
+        <div class="envelope-flipper" id="flipper">
             
-            <div class="card" id="inviteCard">
-                <img src="invite-design.png" alt="Party Invite" class="invite-image">
-                <form id="rsvpForm">
-                    <input type="hidden" id="guestNameInput">
-                    <div class="button-group">
-                        <button type="submit" name="status" value="yes" class="btn btn-yes">Yes!</button>
-                        <button type="submit" name="status" value="no" class="btn btn-no">No</button>
-                    </div>
-                </form>
+            <div class="env-front">
+                <div class="calligraphy-text" id="envelopeGuestName">Loading...</div>
             </div>
+
+            <div class="env-back">
+                <div class="flap"></div>
+                <div class="back-fold"></div>
+                
+                <div class="card" id="inviteCard">
+                    <img src="invite-design.png" alt="Invitation" class="invite-image">
+                    <form id="rsvpForm">
+                        <input type="hidden" id="guestNameInput">
+                        <div class="button-group">
+                            <button type="submit" name="status" value="yes" class="btn btn-yes">Accept</button>
+                            <button type="submit" name="status" value="no" class="btn btn-no">Decline</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
