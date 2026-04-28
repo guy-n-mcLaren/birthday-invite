@@ -1,10 +1,12 @@
 /* 1. Imports & Setup */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Shrikhand&display=swap');
 
 :root {
     --env-color: #f08080;   /* Main Envelope Color */
     --env-dark: #cc6666;    /* Flap Color */
     --bg-color: #fdf5e6;    /* Page Background */
+    --groovy-yellow: #FFD700;
+    --retro-red: #FF4500;
 }
 
 body {
@@ -15,9 +17,9 @@ body {
     align-items: center;
     height: 100vh;
     background-color: var(--bg-color);
-    font-family: sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     overflow: hidden;
-    perspective: 2000px; /* Essential for 3D depth */
+    perspective: 2000px;
 }
 
 /* 2. The Animation Container */
@@ -39,7 +41,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* Hides the side not facing user */
+    backface-visibility: hidden;
     border-radius: 8px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
@@ -64,7 +66,7 @@ body {
 /* 4. BACK: Flap Side */
 .env-back {
     background-color: var(--env-color);
-    transform: rotateY(180deg); /* Positioned behind the front */
+    transform: rotateY(180deg); 
 }
 
 .back-fold {
@@ -85,13 +87,13 @@ body {
     border-right: 160px solid transparent;
     border-top: 110px solid var(--env-dark);
     z-index: 4;
-    transition: transform 0.6s ease 1.2s; /* Waits for spin to finish */
+    transition: transform 0.6s ease 1.2s; 
     transform-origin: top;
 }
 
 .envelope-flipper.open .flap {
     transform: rotateX(180deg);
-    z-index: 1; /* Moves flap behind the card */
+    z-index: 1; 
 }
 
 /* 5. THE CARD: Pop out and Settle animation */
@@ -101,19 +103,18 @@ body {
     left: 5px;
     right: 5px;
     background: white;
-    padding: 10px;
+    padding: 15px;
     z-index: 2;
     opacity: 0;
     box-shadow: 0 5px 25px rgba(0,0,0,0.2);
     box-sizing: border-box;
     text-align: center;
-    border-radius: 4px;
+    border-radius: 8px;
 }
 
-/* Trigger the complex movement when 'open' class is added */
 .envelope-flipper.open .card {
     animation: popOutAndSettle 1.8s ease-in-out forwards;
-    animation-delay: 1.6s; /* Waits for spin + flap */
+    animation-delay: 1.6s; 
 }
 
 @keyframes popOutAndSettle {
@@ -124,45 +125,68 @@ body {
     }
     40% {
         opacity: 1;
-        transform: translateY(-140px) scale(0.95); /* Clears the envelope */
+        transform: translateY(-140px) scale(0.95);
         z-index: 2;
     }
     60% {
-        z-index: 10; /* Pops to the front of the envelope */
+        z-index: 10;
         transform: translateY(-140px) scale(1.1);
     }
     100% {
         opacity: 1;
         z-index: 10;
-        transform: translateY(20px) scale(1.15); /* Descends to cover envelope */
+        transform: translateY(20px) scale(1.15); /* Settles over the envelope area */
     }
 }
 
 .invite-image {
     width: 100%;
     height: auto;
-    max-height: 60vh; /* Keeps card from being too tall for mobile */
+    max-height: 50vh; /* Adjusted to leave room for the longer buttons */
     object-fit: contain;
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
 }
 
-/* 6. RSVP Buttons */
+/* 6. RSVP Buttons - Groovy Style */
 .button-group {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 12px;
 }
 
 .btn {
-    flex: 1;
-    padding: 12px;
+    width: 100%;
+    padding: 14px 10px;
     border: none;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
+    border-radius: 50px; /* Pill shape */
+    font-family: 'Shrikhand', cursive; /* Fun retro font */
+    font-weight: normal;
     cursor: pointer;
     font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 0px rgba(0,0,0,0.1);
 }
 
-.btn-yes { background-color: #2ecc71; }
-.btn-no { background-color: #e74c3c; }
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0px rgba(0,0,0,0.1);
+}
+
+.btn-yes { 
+    background-color: var(--groovy-yellow);
+    color: #333;
+    animation: subtlePulse 2s infinite;
+}
+
+.btn-no { 
+    background-color: var(--retro-red);
+    color: white; 
+}
+
+@keyframes subtlePulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
